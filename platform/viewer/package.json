@@ -58,6 +58,7 @@
     "@ohif/extension-dicom-segmentation": "^0.4.7",
     "@ohif/extension-lesion-tracker": "^0.2.1",
     "@ohif/extension-vtk": "^1.7.10",
+    "@ohif/extension-nvidia-aiaa": "^1.2.19",
     "@ohif/i18n": "^0.52.8",
     "@ohif/ui": "^1.5.6",
     "@tanem/react-nprogress": "^1.1.25",
