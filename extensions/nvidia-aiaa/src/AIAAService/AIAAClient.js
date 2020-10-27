@@ -19,7 +19,7 @@ export default class AIAAClient {
   }
 
   getLogsURL(lines = 100) {
-    let log_url = new URL('logs', this.server_url);
+    let log_url = new URL('/logs/', this.server_url);
     log_url.searchParams.append('lines', lines);
     return log_url.toString();
   }

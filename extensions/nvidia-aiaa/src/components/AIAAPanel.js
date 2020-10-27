@@ -36,7 +36,7 @@ ColoredCircle.propTypes = {
 };
 
 const DICOM_SERVER_INFO = {
-  server_address: '10.110.46.111',
+  server_address: '127.0.0.1',
   server_port: 11112,
   ae_title: 'DCM4CHEE',
   query_level: 'PATIENT',
@@ -95,13 +95,13 @@ export default class AIAAPanel extends Component {
   }
 
   getAIAASettings = () => {
-    const url = AIAAUtils.getAIAACookie('NVIDIA_AIAA_SERVER_URL', 'http://10.110.46.111:5678/');
+    const url = AIAAUtils.getAIAACookie('NVIDIA_AIAA_SERVER_URL', 'http://127.0.0.1:5000/');
     const overlap_segments = AIAAUtils.getAIAACookieBool('NVIDIA_AIAA_OVERLAP_SEGMENTS', false);
     const export_format = AIAAUtils.getAIAACookie('NVIDIA_AIAA_EXPORT_FORMAT', 'NRRD');
     const dextr3d_min_points = AIAAUtils.getAIAACookieNumber('NVIDIA_AIAA_DEXTR3D_MIN_POINTS', 6);
     const dextr3d_auto_run = AIAAUtils.getAIAACookieBool('NVIDIA_AIAA_DEXTR3D_AUTO_RUN', true);
     const fetch_from_dicom_server = AIAAUtils.getAIAACookieBool('NVIDIA_AIAA_FETCH_FROM_DICOM_SERVER', false);
-    const server_address = AIAAUtils.getAIAACookie('NVIDIA_AIAA_DICOM_SERVER_ADDRESS', '10.110.46.111');
+    const server_address = AIAAUtils.getAIAACookie('NVIDIA_AIAA_DICOM_SERVER_ADDRESS', '127.0.0.1');
     const server_port = AIAAUtils.getAIAACookieNumber('NVIDIA_AIAA_DICOM_SERVER_PORT', 11112);
     const ae_title = AIAAUtils.getAIAACookie('NVIDIA_AIAA_DICOM_AE_TITLE', 'DCM4CHEE');
 
@@ -263,7 +263,7 @@ export default class AIAAPanel extends Component {
       DICOM_SERVER_INFO.study_uid = StudyInstanceUID;
       DICOM_SERVER_INFO.query_level = 'SERIES';
 
-      response = await aiaaClient.createSession(null, DICOM_SERVER_INFO);
+      response = await aiaaClient.createSession(null, {'dicom': DICOM_SERVER_INFO});
     } else {
       const useNifti = false;
       let volumes;
