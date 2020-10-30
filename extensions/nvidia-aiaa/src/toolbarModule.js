@@ -25,14 +25,7 @@ const definitions = [
         type: TOOLBAR_BUTTON_TYPES.SET_TOOL_ACTIVE,
         commandName: 'setToolActive',
         commandOptions: { toolName: 'DeepgrowProbeTool' },
-      }
-    ]
-  },
-  {
-    id: 'SegTools',
-    label: 'Segmentation',
-    icon: 'ellipse-circle',
-    buttons: [
+      },
       {
         id: 'Brush',
         label: 'Brush',
