@@ -19,6 +19,7 @@ import {
   getImageIdsForDisplaySet,
   getLabelMaps,
   updateSegment,
+  updateSegmentMeta,
 } from '../utils/genericUtils';
 import AIAASegReader from '../utils/AIAASegReader';
 
@@ -96,14 +97,14 @@ export default class AIAAPanel extends Component {
 
   getAIAASettings = () => {
     const url = AIAAUtils.getAIAACookie('NVIDIA_AIAA_SERVER_URL', 'http://127.0.0.1:5000/');
-    const overlap_segments = AIAAUtils.getAIAACookieBool('NVIDIA_AIAA_OVERLAP_SEGMENTS', false);
-    const export_format = AIAAUtils.getAIAACookie('NVIDIA_AIAA_EXPORT_FORMAT', 'NRRD');
+    const overlap_segments = AIAAUtils.getAIAACookieBool('NVIDIA_AIAA_OVERLAP_SEGMENTS', true);
+    const export_format = AIAAUtils.getAIAACookie('NVIDIA_AIAA_EXPORT_FORMAT', 'NIFTI');
     const dextr3d_min_points = AIAAUtils.getAIAACookieNumber('NVIDIA_AIAA_DEXTR3D_MIN_POINTS', 6);
     const dextr3d_auto_run = AIAAUtils.getAIAACookieBool('NVIDIA_AIAA_DEXTR3D_AUTO_RUN', true);
     const fetch_from_dicom_server = AIAAUtils.getAIAACookieBool('NVIDIA_AIAA_FETCH_FROM_DICOM_SERVER', false);
     const server_address = AIAAUtils.getAIAACookie('NVIDIA_AIAA_DICOM_SERVER_ADDRESS', '127.0.0.1');
-    const server_port = AIAAUtils.getAIAACookieNumber('NVIDIA_AIAA_DICOM_SERVER_PORT', 11112);
-    const ae_title = AIAAUtils.getAIAACookie('NVIDIA_AIAA_DICOM_AE_TITLE', 'DCM4CHEE');
+    const server_port = AIAAUtils.getAIAACookieNumber('NVIDIA_AIAA_DICOM_SERVER_PORT', 4242);
+    const ae_title = AIAAUtils.getAIAACookie('NVIDIA_AIAA_DICOM_AE_TITLE', 'ORTHANC');
 
     return {
       url: url,
@@ -547,6 +548,19 @@ export default class AIAAPanel extends Component {
     this.setState({ selectedSegmentId: id });
   };
 
+  onUpdateLabelOrDesc = (id, evt, label) => {
+    const { element } = this.viewConstants;
+    let index = id.split('+').map(Number);
+    const labelmapIndex = index[0];
+    const segmentIndex = index[1];
+
+    if (label) {
+      updateSegmentMeta(element, labelmapIndex, segmentIndex, evt.currentTarget.textContent, undefined)
+    } else {
+      updateSegmentMeta(element, labelmapIndex, segmentIndex, undefined, evt.currentTarget.textContent)
+    }
+  };
+
   onClickDeleteSegment = () => {
     const activeIndex = this.getSelectedActiveIndex();
     const { element } = this.viewConstants;
@@ -612,6 +626,35 @@ export default class AIAAPanel extends Component {
     const { labelmaps3D } = getters.labelmaps3D(this.viewConstants.element);
     if (!labelmaps3D) {
       console.info('LabelMap3D is empty.. so zero segments');
+      return;
+    }
+
+    if (this.state.aiaaSettings.export_format === 'DICOM-SEG') {
+      const {studies} = this.props;
+      const {StudyInstanceUID, SeriesInstanceUID} = this.viewConstants;
+
+      this.notification.show({
+        title: 'NVIDIA AIAA',
+        message: 'Preparing DICOM-SEG for uploading',
+        type: 'info',
+        duration: 5000,
+      });
+
+      const images = await new AIAAVolume().createDicomData(
+          studies,
+          StudyInstanceUID,
+          SeriesInstanceUID,
+          true,
+      )
+
+      AIAASegReader.serializeDicomSeg(images, labelmaps3D, 'segment.dcm');
+
+      this.notification.show({
+        title: 'NVIDIA AIAA',
+        message: 'DICOM-SEG for uploaded/saved',
+        type: 'success',
+        duration: 5000,
+      });
       return;
     }
 
@@ -797,7 +840,7 @@ export default class AIAAPanel extends Component {
         <table>
           <tbody>
           <tr>
-            <td className="aiaaTitle">NVIDIA Clara AIAA Panel</td>
+            <td className="aiaaTitle">NVIDIA Clara AIAA</td>
           </tr>
           <tr>
             <td className="aiaaSubtitle">All Segments: <b>{totalSegments}</b></td>
@@ -828,11 +871,11 @@ export default class AIAAPanel extends Component {
               <button
                 className="segButton"
                 onClick={this.onClickExportSegments}
-                title={'Save Segments'}
-                disabled={!this.state.imageHeader || !totalSegments}
+                title={'Save/Download Segments'}
+                disabled={!((this.state.imageHeader || this.state.aiaaSettings.export_format === 'DICOM-SEG') && totalSegments)}
               >
                 <Icon name="save" width="12px" height="12px"/>
-                &nbsp;Export
+                &nbsp;{(this.state.aiaaSettings.export_format === 'DICOM-SEG')? 'Save' : 'Download'}
               </button>
             </td>
           </tr>
@@ -864,10 +907,12 @@ export default class AIAAPanel extends Component {
                 <td>
                   <ColoredCircle color={seg.color}/>
                 </td>
-                <td className="segEdit" contentEditable="true" suppressContentEditableWarning="true">
+                <td className="segEdit" contentEditable="true" suppressContentEditableWarning="true"
+                    onKeyUp={(evt) => this.onUpdateLabelOrDesc(seg.id, evt, true)}>
                   {seg.meta.SegmentLabel}
                 </td>
-                <td contentEditable="true" suppressContentEditableWarning="true">
+                <td contentEditable="true" suppressContentEditableWarning="true"
+                    onKeyUp={(evt) => this.onUpdateLabelOrDesc(seg.id, evt, false)}>
                   {seg.meta.SegmentDescription}
                 </td>
               </tr>

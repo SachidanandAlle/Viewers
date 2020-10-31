@@ -341,7 +341,7 @@ async function getStudyList(
     moment()
       .subtract(25000, 'days')
       .toDate();
-  const studyDateTo = filters.studyDateTo || new Date();
+  const studyDateTo = filters.studyDateTo || moment().add(1, 'days').toDate();
 
   const mappedFilters = {
     PatientID: filters.PatientID,
