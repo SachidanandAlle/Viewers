@@ -14,6 +14,7 @@ export default function init({ servicesManager, configuration }) {
   console.info(DeepgrowProbeTool);
   console.info(DExtr3DProbeTool);
 
-  const tools = [DeepgrowProbeTool, DExtr3DProbeTool];
+  const { CircleScissorsTool, FreehandScissorsTool, RectangleScissorsTool } = csTools;
+  const tools = [DeepgrowProbeTool, DExtr3DProbeTool, CircleScissorsTool, FreehandScissorsTool, RectangleScissorsTool];
   tools.forEach(tool => csTools.addTool(tool));
 }

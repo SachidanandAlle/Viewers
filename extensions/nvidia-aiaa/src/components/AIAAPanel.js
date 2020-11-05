@@ -449,8 +449,12 @@ export default class AIAAPanel extends Component {
     await this.updateView(activeIndex, response, null);
   };
 
-  onDeepgrow = async (sliceIndex) => {
+  onDeepgrow = async (currentPoint) => {
     const model_name = this.state.currentDeepgrowModel ? this.state.currentDeepgrowModel.name : null;
+    const deepgrow_type = this.state.currentDeepgrowModel ? this.state.currentDeepgrowModel.deepgrow : null;
+    const is3D = deepgrow_type && (deepgrow_type === '3d' || deepgrow_type === '3D');
+    console.debug('Deepgrow 3D: ' + is3D);
+
     if (!model_name) {
       this.notification.show({
         title: 'NVIDIA AIAA',
@@ -475,14 +479,16 @@ export default class AIAAPanel extends Component {
 
     const activeIndex = this.getSelectedActiveIndex();
     const points = this.state.deepgrowPoints.get(activeIndex.id);
-    const fg = points.filter(p => p.z === sliceIndex && !p.data.ctrlKey).map(p => [p.x, p.y, p.z]);
-    const bg = points.filter(p => p.z === sliceIndex && p.data.ctrlKey).map(p => [p.x, p.y, p.z]);
+    const fg = points.filter(p => (is3D || p.z === currentPoint.z) && !p.data.ctrlKey).map(p => [p.x, p.y, p.z]);
+    const bg = points.filter(p => (is3D || p.z === currentPoint.z) && p.data.ctrlKey).map(p => [p.x, p.y, p.z]);
+    const cp = [[currentPoint.x, currentPoint.y, currentPoint.z]];
 
     this.setState({ aiaaOpInProgress: true });
     let response = await aiaaClient.deepgrow(
       model_name,
       fg,
       bg,
+      cp,
       null,
       session_id,
     );
@@ -498,7 +504,7 @@ export default class AIAAPanel extends Component {
       return;
     }
 
-    await this.updateView(activeIndex, response, null, 'override', sliceIndex);
+    await this.updateView(activeIndex, response, null, 'override', is3D ? -1 : currentPoint.z);
   };
 
   /**
@@ -630,6 +636,10 @@ export default class AIAAPanel extends Component {
     }
 
     if (this.state.aiaaSettings.export_format === 'DICOM-SEG') {
+      if (!confirm('This will add a new version of DICOM-SEG into server.  Do you want to continue?')) {
+        return;
+      }
+
       const {studies} = this.props;
       const {StudyInstanceUID, SeriesInstanceUID} = this.viewConstants;
 
@@ -819,8 +829,7 @@ export default class AIAAPanel extends Component {
     const pointData = this.getPointData(evt);
     points.push(pointData);
 
-    //TODO:: Should I wait here?
-    await this.onDeepgrow(pointData.z);
+    await this.onDeepgrow({x: pointData.x, y: pointData.y, z: pointData.z});
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {

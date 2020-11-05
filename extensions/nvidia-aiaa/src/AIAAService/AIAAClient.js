@@ -85,10 +85,11 @@ export default class AIAAClient {
     return this.inference('segmentation', model_name, params, image_in, session_id);
   }
 
-  async deepgrow(model_name, foreground, background, image_in, session_id = undefined, output_type = '.nrrd') {
+  async deepgrow(model_name, foreground, background, current_point, image_in, session_id = undefined, output_type = '.nrrd') {
     const params = {
       foreground: foreground,
       background: background,
+      current_point: current_point,
     };
     if (output_type) {
       params.result_extension = output_type;
