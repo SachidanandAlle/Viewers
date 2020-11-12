@@ -5,7 +5,7 @@ const TOOLBAR_BUTTON_TYPES = {
 };
 
 const definitions = [
-  {
+  /*{
     id: 'NvidiaAIAA',
     label: 'NVIDIA AIAA',
     icon: 'ellipse-circle',
@@ -27,7 +27,7 @@ const definitions = [
         commandOptions: { toolName: 'DeepgrowProbeTool' },
       }
     ]
-  },
+  },*/
   {
     id: 'SegTools',
     label: 'Segmentation',
