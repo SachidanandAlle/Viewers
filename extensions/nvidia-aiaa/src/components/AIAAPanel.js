@@ -101,7 +101,7 @@ export default class AIAAPanel extends Component {
     const export_format = AIAAUtils.getAIAACookie('NVIDIA_AIAA_EXPORT_FORMAT', 'NIFTI');
     const dextr3d_min_points = AIAAUtils.getAIAACookieNumber('NVIDIA_AIAA_DEXTR3D_MIN_POINTS', 6);
     const dextr3d_auto_run = AIAAUtils.getAIAACookieBool('NVIDIA_AIAA_DEXTR3D_AUTO_RUN', true);
-    const fetch_from_dicom_server = AIAAUtils.getAIAACookieBool('NVIDIA_AIAA_FETCH_FROM_DICOM_SERVER', false);
+    const fetch_from_dicom_server = AIAAUtils.getAIAACookieBool('NVIDIA_AIAA_FETCH_FROM_DICOM_SERVER', true);
     const server_address = AIAAUtils.getAIAACookie('NVIDIA_AIAA_DICOM_SERVER_ADDRESS', '127.0.0.1');
     const server_port = AIAAUtils.getAIAACookieNumber('NVIDIA_AIAA_DICOM_SERVER_PORT', 4242);
     const ae_title = AIAAUtils.getAIAACookie('NVIDIA_AIAA_DICOM_AE_TITLE', 'ORTHANC');
