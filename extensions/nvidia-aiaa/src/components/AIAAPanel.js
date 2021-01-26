@@ -191,6 +191,9 @@ export default class AIAAPanel extends Component {
         segModels.push(response.data[i]);
       } else if (response.data[i].type === 'deepgrow') {
         deepgrowModels.push(response.data[i]);
+      } else if (response.data[i].type === 'pipeline') {
+        segModels.push(response.data[i]);
+        deepgrowModels.push(response.data[i]);
       } else {
         console.warn(response.data[i].name + ' has unsupported types for this plugin');
       }
