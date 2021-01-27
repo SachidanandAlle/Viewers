@@ -53,6 +53,7 @@ export default class AIAAClient {
     console.info('AIAAClient - create session');
     let session_url = new URL('/session/', this.server_url);
     session_url.searchParams.append('expiry', expiry);
+    session_url.searchParams.append('save_as', '.nii');
     return await AIAAUtils.api_put(session_url.toString(), params, image_in);
   }
 
