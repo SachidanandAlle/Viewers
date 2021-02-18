@@ -3,6 +3,221 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.8.10](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.8.9...@ohif/viewer@4.8.10) (2021-02-08)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.8.9](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.8.8...@ohif/viewer@4.8.9) (2021-02-05)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.8.8](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.8.7...@ohif/viewer@4.8.8) (2021-02-05)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.8.7](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.8.6...@ohif/viewer@4.8.7) (2021-01-28)
+
+
+### Bug Fixes
+
+* **config:** Update Google Healthcare API endpoint from v1beta1 to v1 ([#2256](https://github.com/OHIF/Viewers/issues/2256)) ([83b7d9e](https://github.com/OHIF/Viewers/commit/83b7d9e8b4240a928eb43735280000e97f186d90))
+
+
+
+
+
+## [4.8.6](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.8.5...@ohif/viewer@4.8.6) (2021-01-26)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.8.5](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.8.4...@ohif/viewer@4.8.5) (2021-01-21)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.8.4](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.8.3...@ohif/viewer@4.8.4) (2021-01-21)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.8.3](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.8.2...@ohif/viewer@4.8.3) (2021-01-21)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.8.2](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.8.1...@ohif/viewer@4.8.2) (2021-01-21)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.8.1](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.8.0...@ohif/viewer@4.8.1) (2020-12-10)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+# [4.8.0](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.7.2...@ohif/viewer@4.8.0) (2020-12-10)
+
+
+### Features
+
+* visualize overlapping segments in cornerstone ([#2185](https://github.com/OHIF/Viewers/issues/2185)) ([29fceac](https://github.com/OHIF/Viewers/commit/29fceacee97d51f1952a0f6b574c66596d32c201))
+
+
+
+
+
+## [4.7.2](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.7.1...@ohif/viewer@4.7.2) (2020-12-03)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.7.1](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.7.0...@ohif/viewer@4.7.1) (2020-12-03)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+# [4.7.0](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.6.3...@ohif/viewer@4.7.0) (2020-12-03)
+
+
+### Features
+
+* Update approach to better handle rtdose instead of disabling panel ([f3cecf1](https://github.com/OHIF/Viewers/commit/f3cecf129b16f8d24d239aa44fdff7f46e6ba683))
+
+
+
+
+
+## [4.6.3](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.6.2...@ohif/viewer@4.6.3) (2020-12-03)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.6.2](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.6.1...@ohif/viewer@4.6.2) (2020-12-03)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.6.1](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.6.0...@ohif/viewer@4.6.1) (2020-12-03)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+# [4.6.0](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.5.29...@ohif/viewer@4.6.0) (2020-12-03)
+
+
+### Features
+
+* Add error boundary and retry logic for network failures during dynamic imports ([#2145](https://github.com/OHIF/Viewers/issues/2145)) ([4c07904](https://github.com/OHIF/Viewers/commit/4c079044f6ae2381c6054d8d77414100152d1d19))
+
+
+
+
+
+## [4.5.29](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.5.28...@ohif/viewer@4.5.29) (2020-12-03)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.5.28](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.5.27...@ohif/viewer@4.5.28) (2020-11-30)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.5.27](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.5.26...@ohif/viewer@4.5.27) (2020-11-30)
+
+
+### Bug Fixes
+
+* added MAX_CONCURRENCY limit as each webworker costs RAM, and machines with e.g 24 cores crash the process ([#2161](https://github.com/OHIF/Viewers/issues/2161)) ([d2e777b](https://github.com/OHIF/Viewers/commit/d2e777bafc70895fad15b91c47517e0eea622405))
+
+
+
+
+
+## [4.5.26](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.5.25...@ohif/viewer@4.5.26) (2020-11-19)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.5.25](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.5.24...@ohif/viewer@4.5.25) (2020-11-13)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.5.24](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.5.23...@ohif/viewer@4.5.24) (2020-11-02)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
+## [4.5.23](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.5.22...@ohif/viewer@4.5.23) (2020-11-02)
+
+**Note:** Version bump only for package @ohif/viewer
+
+
+
+
+
 ## [4.5.22](https://github.com/OHIF/Viewers/compare/@ohif/viewer@4.5.21...@ohif/viewer@4.5.22) (2020-10-20)
 
 **Note:** Version bump only for package @ohif/viewer

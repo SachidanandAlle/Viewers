@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.4](https://github.com/OHIF/Viewers/compare/@ohif/extension-dicom-rt@0.6.3...@ohif/extension-dicom-rt@0.6.4) (2021-02-05)
+
+**Note:** Version bump only for package @ohif/extension-dicom-rt
+
+
+
+
+
+## [0.6.3](https://github.com/OHIF/Viewers/compare/@ohif/extension-dicom-rt@0.6.2...@ohif/extension-dicom-rt@0.6.3) (2021-01-21)
+
+**Note:** Version bump only for package @ohif/extension-dicom-rt
+
+
+
+
+
+## [0.6.2](https://github.com/OHIF/Viewers/compare/@ohif/extension-dicom-rt@0.6.1...@ohif/extension-dicom-rt@0.6.2) (2021-01-21)
+
+**Note:** Version bump only for package @ohif/extension-dicom-rt
+
+
+
+
+
+## [0.6.1](https://github.com/OHIF/Viewers/compare/@ohif/extension-dicom-rt@0.6.0...@ohif/extension-dicom-rt@0.6.1) (2020-12-10)
+
+
+### Bug Fixes
+
+* panel issues and mpr button (IDC2122-IDC2117) ([32022f5](https://github.com/OHIF/Viewers/commit/32022f51f2d24f53f4c98188980db038a6dfe76c))
+
+
+
+
+
+# [0.6.0](https://github.com/OHIF/Viewers/compare/@ohif/extension-dicom-rt@0.5.0...@ohif/extension-dicom-rt@0.6.0) (2020-12-10)
+
+
+### Features
+
+* visualize overlapping segments in cornerstone ([#2185](https://github.com/OHIF/Viewers/issues/2185)) ([29fceac](https://github.com/OHIF/Viewers/commit/29fceacee97d51f1952a0f6b574c66596d32c201))
+
+
+
+
+
+# [0.5.0](https://github.com/OHIF/Viewers/compare/@ohif/extension-dicom-rt@0.4.9...@ohif/extension-dicom-rt@0.5.0) (2020-12-03)
+
+
+### Features
+
+* Update approach to better handle rtdose instead of disabling panel ([f3cecf1](https://github.com/OHIF/Viewers/commit/f3cecf129b16f8d24d239aa44fdff7f46e6ba683))
+
+
+
+
+
 ## [0.4.9](https://github.com/OHIF/Viewers/compare/@ohif/extension-dicom-rt@0.4.8...@ohif/extension-dicom-rt@0.4.9) (2020-10-12)
 
 **Note:** Version bump only for package @ohif/extension-dicom-rt

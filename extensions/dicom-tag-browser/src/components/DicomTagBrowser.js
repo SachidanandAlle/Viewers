@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { classes } from '@ohif/core';
+import { classes, cornerstone as OHIFCornerstone } from '@ohif/core';
+import { Range } from '@ohif/ui';
 import dcmjs from 'dcmjs';
 import DicomBrowserSelect from './DicomBrowserSelect';
 import moment from 'moment';
@@ -10,6 +11,8 @@ const { ImageSet } = classes;
 const { DicomMetaDictionary } = dcmjs.data;
 const { nameMap } = DicomMetaDictionary;
 
+const { metadataProvider } = OHIFCornerstone;
+
 const DicomTagBrowser = ({ displaySets, displaySetInstanceUID }) => {
   const [
     activeDisplaySetInstanceUID,
@@ -17,6 +20,7 @@ const DicomTagBrowser = ({ displaySets, displaySetInstanceUID }) => {
   ] = useState(displaySetInstanceUID);
   const [activeInstance, setActiveInstance] = useState(0);
   const [tags, setTags] = useState([]);
+  const [meta, setMeta] = useState('');
   const [instanceList, setInstanceList] = useState([]);
   const [displaySetList, setDisplaySetList] = useState([]);
   const [isImageStack, setIsImageStack] = useState(false);
@@ -83,6 +87,7 @@ const DicomTagBrowser = ({ displaySets, displaySetInstanceUID }) => {
     }
 
     setTags(getSortedTags(metadata));
+    setMeta(metadata);
     setInstanceList(instanceList);
     setDisplaySetList(newDisplaySetList);
     setIsImageStack(isImageStack);
@@ -95,47 +100,56 @@ const DicomTagBrowser = ({ displaySets, displaySetInstanceUID }) => {
   let instanceSelectList = null;
 
   if (isImageStack) {
-    const selectedInstanceValue = instanceList[activeInstance];
-
     instanceSelectList = (
-      <DicomBrowserSelect
-        value={selectedInstanceValue}
-        formatOptionLabel={DicomBrowserSelectItem}
-        options={instanceList}
-      />
+      <div className="dicom-tag-browser-instance-range">
+        <Range
+          showValue
+          step={1}
+          min={1}
+          max={instanceList.length - 1}
+          value={activeInstance}
+          valueRenderer={value => <p>Instance Number: {value}</p>}
+          onChange={({ target }) => {
+            const instanceIndex = parseInt(target.value);
+            setActiveInstance(instanceIndex);
+          }}
+        />
+      </div>
     );
   }
 
   return (
-    <div>
+    <div className="dicom-tag-browser-content">
       <DicomBrowserSelect
         value={selectedDisplaySetValue}
         formatOptionLabel={DicomBrowserSelectItem}
         options={displaySetList}
       />
       {instanceSelectList}
-      <DicomTagTable tags={tags}></DicomTagTable>
+      <div className="dicom-tag-browser-table-wrapper">
+        <DicomTagTable tags={tags} meta={meta}></DicomTagTable>
+      </div>
     </div>
   );
 };
 
-function DicomTagTable({ tags }) {
-  const rows = getFormattedRowsFromTags(tags);
+function DicomTagTable({ tags, meta }) {
+  const rows = getFormattedRowsFromTags(tags, meta);
 
   return (
-    <div>
-      <table className="dicom-tag-browser-table">
+    <table className="dicom-tag-browser-table">
+      <tbody>
         <tr>
           <th className="dicom-tag-browser-table-left">Tag</th>
           <th className="dicom-tag-browser-table-left">Value Representation</th>
           <th className="dicom-tag-browser-table-left">Keyword</th>
           <th className="dicom-tag-browser-table-left">Value</th>
         </tr>
-        {rows.map(row => {
+        {rows.map((row, index) => {
           const className = row.className ? row.className : null;
 
           return (
-            <tr className={className}>
+            <tr className={className} key={`DICOMTagRow-${index}`}>
               <td>{row[0]}</td>
               <td className="dicom-tag-browser-table-center">{row[1]}</td>
               <td>{row[2]}</td>
@@ -143,12 +157,12 @@ function DicomTagTable({ tags }) {
             </tr>
           );
         })}
-      </table>
-    </div>
+      </tbody>
+    </table>
   );
 }
 
-function getFormattedRowsFromTags(tags) {
+function getFormattedRowsFromTags(tags, meta) {
   const rows = [];
 
   tags.forEach(tagInfo => {
@@ -175,6 +189,21 @@ function getFormattedRowsFromTags(tags) {
         rows.push(...formatedRowsFromTags);
       });
     } else {
+      if (tagInfo.vr === 'xs') {
+        try {
+          const dataset = metadataProvider.getStudyDataset(
+            meta.StudyInstanceUID
+          );
+          const tag = dcmjs.data.Tag.fromPString(tagInfo.tag).toCleanString();
+          const originalTagInfo = dataset[tag];
+          tagInfo.vr = originalTagInfo.vr;
+        } catch (error) {
+          console.error(
+            `Failed to parse value representation for tag '${tagInfo.keyword}'`
+          );
+        }
+      }
+
       rows.push([
         `${tagInfo.tagIndent}${tagInfo.tag}`,
         tagInfo.vr,
@@ -247,10 +276,11 @@ function getRows(metadata, depth = 0) {
       sequenceAsArray.forEach(item => {
         const sequenceRows = getRows(item, depth + 1);
 
-        // Sort the sequence group.
-        _sortTagList(sequenceRows);
-
-        sequence.values.push(sequenceRows);
+        if (sequenceRows.length) {
+          // Sort the sequence group.
+          _sortTagList(sequenceRows);
+          sequence.values.push(sequenceRows);
+        }
       });
 
       continue;
@@ -276,13 +306,12 @@ function getRows(metadata, depth = 0) {
           } else if (value.Alphabetic) {
             value = value.Alphabetic;
           } else {
-            console.error('Unrecognised Value for element:');
-            console.error(value);
+            console.warn(`Unrecognised Value: ${value} for ${keyword}:`);
+            console.warn(value);
             value = ' ';
           }
         } else {
-          console.error('Unrecognised Value for element:');
-          console.error(value);
+          console.warn(`Unrecognised Value: ${value} for ${keyword}:`);
           value = ' ';
         }
       }

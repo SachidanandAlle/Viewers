@@ -1,6 +1,11 @@
 import { MODULE_TYPES, utils } from '@ohif/core';
 import loadSegmentation from './loadSegmentation';
 import getSourceDisplaySet from './getSourceDisplaySet';
+import OHIF from '@ohif/core';
+import dcmjs from 'dcmjs';
+
+const { DicomLoaderService } = OHIF.utils;
+const { DicomMessage, DicomMetaDictionary } = dcmjs.data;
 
 // TODO: Should probably use dcmjs for this
 const SOP_CLASS_UIDS = {
@@ -46,11 +51,11 @@ export default function getSopClassHandlerModule({ servicesManager }) {
         StudyInstanceUID,
         FrameOfReferenceUID,
         authorizationHeaders,
-        metadata,
         isDerived: true,
         referencedDisplaySetUID: null, // Assigned when loaded.
         labelmapIndex: null, // Assigned when loaded.
         isLoaded: false,
+        hasOverlapping: false,
         SeriesDate,
         SeriesTime,
         SeriesNumber,
@@ -62,11 +67,110 @@ export default function getSopClassHandlerModule({ servicesManager }) {
         return getSourceDisplaySet(studies, segDisplaySet);
       };
 
-      segDisplaySet.load = function(referencedDisplaySet, studies) {
-        return loadSegmentation(segDisplaySet, referencedDisplaySet, studies);
+      segDisplaySet.load = async function(referencedDisplaySet, studies) {
+        segDisplaySet.isLoaded = true;
+        const { StudyInstanceUID } = referencedDisplaySet;
+        const segArrayBuffer = await DicomLoaderService.findDicomDataPromise(
+          segDisplaySet,
+          studies
+        );
+        const dicomData = DicomMessage.readFile(segArrayBuffer);
+        const dataset = DicomMetaDictionary.naturalizeDataset(dicomData.dict);
+        dataset._meta = DicomMetaDictionary.namifyDataset(dicomData.meta);
+        const imageIds = _getImageIdsForDisplaySet(
+          studies,
+          StudyInstanceUID,
+          referencedDisplaySet.SeriesInstanceUID
+        );
+        return new Promise(async (resolve, reject) => {
+          let results;
+          try {
+            results = _parseSeg(segArrayBuffer, imageIds);
+          } catch (error) {
+            segDisplaySet.isLoaded = false;
+            segDisplaySet.loadError = true;
+            reject(error);
+          }
+          const {
+            labelmapBufferArray,
+            segMetadata,
+            segmentsOnFrame,
+            segmentsOnFrameArray,
+          } = results;
+
+          let labelmapIndex;
+          if (labelmapBufferArray.length > 1) {
+            let labelmapIndexes = [];
+            for (let i = 0; i < labelmapBufferArray.length; ++i) {
+              labelmapIndexes.push(
+                await loadSegmentation(
+                  imageIds,
+                  segDisplaySet,
+                  labelmapBufferArray[i],
+                  segMetadata,
+                  segmentsOnFrame,
+                  segmentsOnFrameArray[i]
+                )
+              );
+            }
+            /**
+             * Since overlapping segmentations have virtual labelmaps,
+             * originLabelMapIndex is used in the panel to select the correct dropdown value.
+             */
+            segDisplaySet.hasOverlapping = true;
+            segDisplaySet.originLabelMapIndex = labelmapIndexes[0];
+            labelmapIndex = labelmapIndexes[0];
+            console.warn('Overlapping segmentations!');
+          } else {
+            labelmapIndex = await loadSegmentation(
+              imageIds,
+              segDisplaySet,
+              labelmapBufferArray[0],
+              segMetadata,
+              segmentsOnFrame,
+              []
+            );
+          }
+          resolve(labelmapIndex);
+        });
       };
 
       return segDisplaySet;
     },
   };
+}
+
+function _parseSeg(arrayBuffer, imageIds) {
+  return dcmjs.adapters.Cornerstone.Segmentation.generateToolState(
+    imageIds,
+    arrayBuffer,
+    cornerstone.metaData
+  );
+}
+
+function _getImageIdsForDisplaySet(
+  studies,
+  StudyInstanceUID,
+  SeriesInstanceUID
+) {
+  const study = studies.find(
+    study => study.StudyInstanceUID === StudyInstanceUID
+  );
+
+  const displaySets = study.displaySets.filter(displaySet => {
+    return displaySet.SeriesInstanceUID === SeriesInstanceUID;
+  });
+
+  if (displaySets.length > 1) {
+    console.warn(
+      'More than one display set with the same SeriesInstanceUID. This is not supported yet...'
+    );
+    // TODO -> We could make check the instance list and see if any match?
+    // Do we split the segmentation into two cornerstoneTools segmentations if there are images in both series?
+    // ^ Will that even happen?
+  }
+
+  const referencedDisplaySet = displaySets[0];
+
+  return referencedDisplaySet.images.map(image => image.getImageId());
 }

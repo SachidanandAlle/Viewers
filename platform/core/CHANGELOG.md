@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.3](https://github.com/OHIF/Viewers/compare/@ohif/core@2.12.2...@ohif/core@2.12.3) (2021-02-05)
+
+**Note:** Version bump only for package @ohif/core
+
+
+
+
+
+## [2.12.2](https://github.com/OHIF/Viewers/compare/@ohif/core@2.12.1...@ohif/core@2.12.2) (2021-02-05)
+
+**Note:** Version bump only for package @ohif/core
+
+
+
+
+
+## [2.12.1](https://github.com/OHIF/Viewers/compare/@ohif/core@2.12.0...@ohif/core@2.12.1) (2021-01-21)
+
+**Note:** Version bump only for package @ohif/core
+
+
+
+
+
+# [2.12.0](https://github.com/OHIF/Viewers/compare/@ohif/core@2.11.1...@ohif/core@2.12.0) (2020-12-10)
+
+
+### Features
+
+* visualize overlapping segments in cornerstone ([#2185](https://github.com/OHIF/Viewers/issues/2185)) ([29fceac](https://github.com/OHIF/Viewers/commit/29fceacee97d51f1952a0f6b574c66596d32c201))
+
+
+
+
+
+## [2.11.1](https://github.com/OHIF/Viewers/compare/@ohif/core@2.11.0...@ohif/core@2.11.1) (2020-12-03)
+
+
+### Bug Fixes
+
+* fallback to original dataset VR for XS ([f57725a](https://github.com/OHIF/Viewers/commit/f57725ac8bfd59ea46ab334a1823882afadefba1))
+
+
+
+
+
+# [2.11.0](https://github.com/OHIF/Viewers/compare/@ohif/core@2.10.7...@ohif/core@2.11.0) (2020-12-03)
+
+
+### Features
+
+* add show scroll option to modal ([be494a7](https://github.com/OHIF/Viewers/commit/be494a7376d15777dbe598289c4ecdb9f48a6a48))
+
+
+
+
+
 ## [2.10.7](https://github.com/OHIF/Viewers/compare/@ohif/core@2.10.6...@ohif/core@2.10.7) (2020-10-07)
 
 **Note:** Version bump only for package @ohif/core

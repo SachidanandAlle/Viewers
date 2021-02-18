@@ -336,12 +336,15 @@ async function getStudyList(
   } = filters;
   const sortFieldName = sort.fieldName || 'PatientName';
   const sortDirection = sort.direction || 'desc';
+<<<<<<< HEAD
   const studyDateFrom =
     filters.studyDateFrom ||
     moment()
       .subtract(25000, 'days')
       .toDate();
   const studyDateTo = filters.studyDateTo || moment().add(1, 'days').toDate();
+=======
+>>>>>>> upstream/master
 
   const mappedFilters = {
     PatientID: filters.PatientID,
@@ -350,8 +353,8 @@ async function getStudyList(
     StudyDescription: filters.StudyDescription,
     ModalitiesInStudy: filters.modalities,
     // NEVER CHANGE
-    studyDateFrom,
-    studyDateTo,
+    studyDateFrom: filters.studyDateFrom,
+    studyDateTo: filters.studyDateTo,
     limit: rowsPerPage,
     offset: pageNumber * rowsPerPage,
     fuzzymatching: server.supportsFuzzyMatching === true,

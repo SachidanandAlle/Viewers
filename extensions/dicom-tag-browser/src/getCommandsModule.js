@@ -34,6 +34,7 @@ export default function getCommandsModule(servicesManager) {
         content: WrappedDicomTagBrowser,
         title: `DICOM Tag Browser`,
         fullscreen: true,
+        noScroll: true,
       });
     },
   };
