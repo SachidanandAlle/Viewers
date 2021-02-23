@@ -58,16 +58,10 @@
     "@ohif/extension-dicom-rt": "^0.6.4",
     "@ohif/extension-dicom-segmentation": "^0.5.2",
     "@ohif/extension-lesion-tracker": "^0.2.1",
-<<<<<<< HEAD
-    "@ohif/extension-vtk": "^1.7.14",
     "@ohif/extension-nvidia-aiaa": "^1.2.19",
-    "@ohif/i18n": "^0.52.8",
-    "@ohif/ui": "^1.5.6",
-=======
     "@ohif/extension-vtk": "^1.10.4",
     "@ohif/i18n": "^0.53.0",
     "@ohif/ui": "^1.8.2",
->>>>>>> upstream/master
     "@tanem/react-nprogress": "^1.1.25",
     "classnames": "^2.2.6",
     "core-js": "^3.2.1",
