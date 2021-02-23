@@ -336,15 +336,12 @@ async function getStudyList(
   } = filters;
   const sortFieldName = sort.fieldName || 'PatientName';
   const sortDirection = sort.direction || 'desc';
-<<<<<<< HEAD
   const studyDateFrom =
     filters.studyDateFrom ||
     moment()
       .subtract(25000, 'days')
       .toDate();
   const studyDateTo = filters.studyDateTo || moment().add(1, 'days').toDate();
-=======
->>>>>>> upstream/master
 
   const mappedFilters = {
     PatientID: filters.PatientID,
